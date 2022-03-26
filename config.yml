@@ -1,0 +1,22 @@
+baseURL: 'https://arnaudperalta.fr'
+languageCode: 'en-us'
+title: 'Arnaud Peralta'
+theme: 'hugo-PaperMod'
+paginate: 5
+
+params:
+  env: production
+  author: Arnaud Peralta
+  ShowCodeCopyButtons: true
+  ShowShareButtons: true
+  homeInfoParams:
+    Title: "Welcome to my blog."
+  socialIcons:
+    - name: github
+      url: "https://github.com/arnaudperalta"
+    - name: linkedin
+      url: "https://www.linkedin.com/in/arnaud-peralta-0b5625154/"
+    - name: stackoverflow
+      url: "https://stackoverflow.com/users/9057499/arnaud-peralta"
+    - name: email
+      url: "arnaud.peralta@gmail.com"
