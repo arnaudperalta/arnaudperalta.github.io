@@ -19,4 +19,4 @@ params:
     - name: stackoverflow
       url: "https://stackoverflow.com/users/9057499/arnaud-peralta"
     - name: email
-      url: "arnaud.peralta@gmail.com"
+      url: "mailto:arnaud.peralta@gmail.com"
