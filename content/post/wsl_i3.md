@@ -37,11 +37,13 @@ export DISPLAY=$(ip route list default | awk '{print $3}'):0
 export LIBGL_ALWAYS_INDIRECT=1
 ```
 
-Notes : If you are using Windows 11 and want to use an other window manager like me, you will need to prevent WSLg from starting. You can do it by writing these two lines in your `%userprofile%/.wslconfig` file.
+Notes : If you are using Windows 11 and want to use an other window manager like me, you will need to prevent WSLg from starting. You can do it by writing these two lines in your `/etc/wsl.conf` file.
 ```
 [wsl2]
 guiApplications=false 
 ```
+Still for Windows 11, you'll need to install `yay` and the `dbus-x11` and `xorg-server` packages.
+
 
 I suggest you to setup VcXsrv with these settings :
 ![VcXsrv settings](/images/vcx_window_settings.png#center)
