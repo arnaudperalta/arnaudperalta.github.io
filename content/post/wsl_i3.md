@@ -1,7 +1,6 @@
 ---
 title: "WSL + X Server + i3 : The good way to develop on Windows."
 date: 2022-03-25T23:27:58+01:00
-draft: true
 ---
 During my university years, I searched a good way to work as a developper when I'm forced to work on Windows.
 
