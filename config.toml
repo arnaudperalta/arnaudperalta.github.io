@@ -1,4 +1,4 @@
-baseURL = 'https://arnaudperalta.github.io'
+baseURL = 'https://arnaudperalta.fr'
 languageCode = 'en-us'
 title = 'Arnaud Peralta'
 theme = 'hugo-PaperMod'
