@@ -91,4 +91,4 @@ If you press Alt+D, you will have access to the rofi menu where you can start ap
 
 ![i3 rofi](/images/i3_rofi.png#center)
 
-Congratulation, you can now enjoy the joy of working in a GNU/Linux environnment when you are forced to use Windows. You just need to install a terminal emulator and your IDE.
+Congratulations, you can now work in a GNU/Linux environnment when you are forced to use Windows. You just need to install a terminal emulator and your IDE.
