@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+  <channel>
+    <title>Posts on Arnaud Peralta</title>
+    <link>https://arnaudperalta.com/post/</link>
+    <description>Recent content in Posts on Arnaud Peralta</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 25 Mar 2022 23:27:58 +0100</lastBuildDate><atom:link href="https://arnaudperalta.com/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>WSL &#43; X Server &#43; i3 : The good way to develop on Windows.</title>
+      <link>https://arnaudperalta.com/post/wsl_i3/</link>
+      <pubDate>Fri, 25 Mar 2022 23:27:58 +0100</pubDate>
+      
+      <guid>https://arnaudperalta.com/post/wsl_i3/</guid>
+      <description>During my university years, I searched a good way to work as a developper when I&amp;rsquo;m forced to work on Windows.
+At the very beginning, I started the web developpment with WampServer and upgraded to WSL2 with a Ubuntu distribution. However, I was not really satisfied as my work environnment was not fully on GNU/Linux.
+As a web developper, I always found out that working on a different OS than the deployment server was very silly.</description>
+    </item>
+    
+  </channel>
+</rss>
