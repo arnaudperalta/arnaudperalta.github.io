@@ -1,4 +1,4 @@
-baseURL: 'https://arnaudperalta.fr'
+baseURL: 'https://arnaudperalta.com'
 languageCode: 'en-us'
 title: 'Arnaud Peralta'
 theme: 'hugo-PaperMod'
@@ -6,11 +6,11 @@ paginate: 5
 
 params:
   env: production
+  defaultTheme: light
+  disableThemeToggle: true
   author: Arnaud Peralta
   ShowCodeCopyButtons: true
   ShowShareButtons: true
-  homeInfoParams:
-    Title: "Welcome to my blog."
   socialIcons:
     - name: github
       url: "https://github.com/arnaudperalta"
@@ -20,3 +20,17 @@ params:
       url: "https://stackoverflow.com/users/9057499/arnaud-peralta"
     - name: email
       url: "mailto:arnaud.peralta@gmail.com"
+  profileMode:
+    enabled: true
+    title: "Software enginneer - Integration lover"
+    subtitle: "Welcome to my blog."
+    imageUrl: "https://avatars.githubusercontent.com/u/34254556?v=4"
+    imageTitle: "My face"
+    imageWidth: 160
+    imageHeight: 160
+    buttons:
+      - name: Posts
+        url: "/post"
+      - name: Resume
+        url: "/resume"
+  ShowBreadCrumbs: true
