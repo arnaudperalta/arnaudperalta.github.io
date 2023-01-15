@@ -15,7 +15,7 @@ params:
     - name: github
       url: "https://github.com/arnaudperalta"
     - name: linkedin
-      url: "https://www.linkedin.com/in/arnaud-peralta-0b5625154/"
+      url: "https://www.linkedin.com/in/arnaudperalta"
     - name: stackoverflow
       url: "https://stackoverflow.com/users/9057499/arnaud-peralta"
     - name: email
