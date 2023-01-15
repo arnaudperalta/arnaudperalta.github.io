@@ -32,5 +32,5 @@ params:
       - name: Posts
         url: "/post"
       - name: Resume
-        url: "/resume"
+        url: "/resume.pdf"
   ShowBreadCrumbs: true
