@@ -12,6 +12,8 @@ When I say, it's bad, it's because you are one command away from using Docker Sw
 
 After typing `docker swarm init` in your production server, you will get everything Docker Engine has to offer (so every Docker Compose features you like), plus, a network abstraction in case you are using multiple nodes, a secret mechanism to store safely confidentials informations (DB credentials), rolling updates, replicas ...
 
+Swarm is known to be used on a cluster who supports multiples nodes (multiples Docker Engines), but I'll show you that a mono-node Swarm is far better than a Compose without going too much in depths.
+
 # Small example with an average architecture
 
 In case you are actually deploying with Docker Compose, you can keep your actual docker-compose.yml file.
@@ -23,57 +25,67 @@ Here is an example of a docker-compose.yml file you can deploy with Docker Compo
 version: "3.9"
 services:
   db:
-    image: registry/db-prod:latest
+    image: postgres:9.4
+    environment:
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pguser
+      POSTGRES_DB: pgdb
+    volumes:
+      - db_storage:/var/lib/postgresql
 
+  web:
+    image: registry/web-$ENV:$CI_COMMIT_SHORT_SHA
+    ports:
+      - "80:8080"
+  
+volumes:
+  db_storage:
 ```
 
-With few changes coming from new concepts introduced by Swarm, we can get this kind of file:
-```
+Without secret mechanism, we need to expose credentials in plain text during our deployment (either in compose file, .env file or inside the image).
+We can't scale this architecture, every services will run on a unique replica on one server.
+
+With few changes coming from new concepts introduced by Swarm, we can get this kind of file who describes a Docker Stack:
+```yml
 version: "3.9"
 services:
   db:
     image: postgres:9.4
     volumes:
-      - db-data:/var/lib/postgresql/data
-    networks:
-      - backend
-    deploy:
-      placement:
-        max_replicas_per_node: 1
-        constraints:
-          - "node.role==manager"
+      - type: volume
+        source: db-data
+        target: /var/lib/postgresql/data
+        volume:
+          nocopy: true
+    secrets:
+      - source: db_init
+        target: "/docker-entrypoint-initdb.d/db_init.sh"
+        mode: 0755
+        uid: "0"
 
   web:
-    image: registry/web-prod:latest
-    ports:
-      - "5000:80"
-    networks:
-      - frontend
-    depends_on:
-      - redis
+    image: registry/web-$ENV:$CI_COMMIT_SHORT_SHA
     deploy:
       replicas: 2
       update_config:
-        parallelism: 2
+        parallelism: 1
       restart_policy:
         condition: on-failure
-
-  result:
-    image: dockersamples/examplevotingapp_result:before
     ports:
-      - "5001:80"
-    networks:
-      - backend
-    depends_on:
-      - db
-    deploy:
-      replicas: 1
-      update_config:
-        parallelism: 2
-        delay: 10s
-      restart_policy:
-        condition: on-failure
+      - target: 8080
+        published: 80
 
+secrets:
+  database_initialization:
+    file: db_init.sh
+
+volumes:
+  db-data:
+```
+
+Yes, it's a bit longer to write, but you only write it once for a better deployment.
+
+To deploy this stack, we will need to run `docker stack deploy -c <this-file>` on a Swarm node.
 
 
 
@@ -110,7 +122,7 @@ swarm_deploy_production:
   variables:
     SSH_USER: "me"
     SSH_HOST: "my_ssh_address"
-    ENV_TO_DEPLOY: "production"
+    ENV: "production"
 ```
 
 And its done, we don't need to copy anything. We changed the targeted docker daemon by changing the DOCKER_HOST variable and by using the ssh protocol.
