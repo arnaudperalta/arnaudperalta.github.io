@@ -8,18 +8,19 @@ date: 2023-05-01T00:59:17+01:00
 OK, that's a bit misleading, it's not THAT bad. With compose, you are defining your services with a simple YAML file and you can pull images from your registry.
 So, with a good integration and a correct deploy script, you can have a good experience with Docker Compose on production.
 
-When I say, it's bad, it's because you are one command away from using Docker Swarm, a simple container orchestrator, defined for production use.
+When I say, it's bad, it's because you are one command away from using Docker Swarm, a simple container orchestrator, defined for production usage.
 
-After typing `docker swarm init` in your production server, you will get everything Docker Engine has to offer (so every Docker Compose features you like), plus, a network abstraction in case you are using multiple nodes, a secret mechanism to store safely confidentials informations (DB credentials), rolling updates, replicas ...
+After typing `docker swarm init` in your production server, you will get everything Docker Engine has to offer, plus, the possibility to host your applications on a multi-node architecture without headaches, a new docker network type (overlay) as the default load balancer packed with Swarm, a more secure secret mechanism to store safely confidential informations (DB credentials), rolling updates, replicas ...
 
-Swarm is known to be used on a cluster who supports multiples nodes (multiples Docker Engines), but I'll show you that a mono-node Swarm is far better than a Compose without going too much in depths.
+Swarm is known to be used on cluster that supports multiples nodes (multiples Docker Engines) to create an high resilient system in case one of your node is going off.
+But I'll show you that a mono-node Swarm is far better than a Compose without going too much in depth.
 
 # Small example with an average architecture
 
 In case you are actually deploying with Docker Compose, you can keep your actual docker-compose.yml file.
-But you need to change some aspects like the network and volumes.
+In effect, the way Docker Compose and Swarm deployment are defined follows the [Compose Spec](https://compose-spec.io/).
 
-Here is an example of a docker-compose.yml file you can deploy with Docker Compose:
+Here is an example of a docker-compose.yml file you can deploy with Docker Compose (I'm using Gitlab CI variables by the way):
 
 ```yml
 version: "3.9"
@@ -42,10 +43,10 @@ volumes:
   db_storage:
 ```
 
-Without secret mechanism, we need to expose credentials in plain text during our deployment (either in compose file, .env file or inside the image).
-We can't scale this architecture, every services will run on a unique replica on one server.
+Without a secret mechanism, we need to expose credentials in plain text during our deployment (either in compose file, .env file, or inside the image).
+We can't scale this architecture, every service will run on a unique replica on one server.
 
-With few changes coming from new concepts introduced by Swarm, we can get this kind of file who describes a Docker Stack:
+With few changes coming from new concepts introduced by Swarm, we can get this kind of file that describes a Docker Stack (A stack is defined by a compose file, you can deploy multiples stack on Swarm cluster):
 ```yml
 version: "3.9"
 services:
@@ -61,7 +62,7 @@ services:
       - source: db_init
         target: "/docker-entrypoint-initdb.d/db_init.sh"
         mode: 0755
-        uid: "0"
+        uid: '0'
 
   web:
     image: registry/web-$ENV:$CI_COMMIT_SHORT_SHA
@@ -72,22 +73,30 @@ services:
       restart_policy:
         condition: on-failure
     ports:
-      - target: 8080
-        published: 80
+      - '8080:80'
+    secrets:
+       - db_credentials
 
 secrets:
   database_initialization:
     file: db_init.sh
+  db_credentials:
+    file: db_credentials
 
 volumes:
   db-data:
 ```
 
 Yes, it's a bit longer to write, but you only write it once for a better deployment.
+We defined a persistent volume for the databas. The way is it done is a little bit different for Swarm, because the volume needs to be uniques across the cluster for a unique replica.
+In most case, the database must have 1 replica.
+
+The service `web` is now defined to be deployed on two replicas, and the update process will update the service 1 replica by an other. With this trick, our uptime will be at 100% because at least one replica will be up during a new deployment.
+
+We are not longer exposing credientials in plain text, here we are using a secret nammed `db_init` which is a file that will be copied in the `target` location. So we can imagine that the secret value is a shell script who exports all of the DB credentials.
+Same for the service `web`, we are using a secret to get access to the database credentials without exposing them.
 
 To deploy this stack, we will need to run `docker stack deploy -c <this-file>` on a Swarm node.
-
-
 
 # Making a good integration with Swarm
 
@@ -130,9 +139,17 @@ In the before_script section we copied our SSH private key to permits Docker to 
 
 In a pipeline, we can imagine some image build stages done with [kaniko](https://github.com/GoogleContainerTools/kaniko) who whill pushes to the new registry.
 
-# Managing sensibles datas
- 
-No more weird image configuration done with volumes. Now that you have a container orchastrator, you will need to include every non-sensible config in your Docker images.
-For the rest, you can use the [CLI](https://docs.docker.com/engine/swarm/secrets/) `docker secret`
-
 # You are scaling ? no worries, Swarm will do the job
+
+Your application is getting more and more load on it and your single node is not enough to support all of it.
+
+As I explained before, we can set a number of replicas for each service in a stack.
+In a first time we can increases the number of replicas on our single-node cluster.
+If it is not enough, we can add a new node to the cluster, see the Docker [documentation]([documentation](https://docs.docker.com/engine/swarm/swarm-tutorial/add-nodes/)).
+
+Docker Swarm will manage alone all of the containers distribution between the nodes and all of the complexity is removed thanks to the overlay type network who make a great abstraction between nodes.
+Here is an illustration from the Docker documentation of the default network `ingress`:
+
+![image](https://docs.docker.com/engine/swarm/images/ingress-routing-mesh.png)
+
+Even if you increase the number of node in your cluster, the `ingress` network will manage load-balance every requests from the outside.
