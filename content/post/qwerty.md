@@ -3,7 +3,7 @@ title: "I use the QWERTY layout, and everyone thinks I'm crazy"
 date: 2023-05-06T00:59:17+01:00
 ---
 
-# Why did I switch from AZERTY
+## Why I switched from AZERTY
 
 I'm a french, I have been using AZERTY since my young age. My phone, my computer keyboards, and my laptop has the AZERTY layout, but I changed this 2 years ago for the US QWERTY layout.
 
