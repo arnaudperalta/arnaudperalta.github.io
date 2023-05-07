@@ -78,10 +78,10 @@ services:
        - db_credentials
 
 secrets:
-  database_initialization:
-    file: db_init.sh
+  db_init:
+    external: true
   db_credentials:
-    file: db_credentials
+    external: true
 
 volumes:
   db-data:
@@ -124,7 +124,7 @@ Here is an exemple with a Gitlab CI job where we deploy a stack (a set of servic
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
     - docker login <your registry>
-    - docker stack deploy -c docker-compose.${ENV_TO_DEPLOY}.yml app
+    - docker stack deploy -c docker-compose.yml app
 
 swarm_deploy_production:
   extends: .swarm_deploy
