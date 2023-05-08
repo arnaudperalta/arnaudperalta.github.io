@@ -37,7 +37,7 @@ A few weeks later, I discovered the [Compose key](https://en.wikipedia.org/wiki/
 
 It is a very popular feature in the Linux world, KDE and Gnome have this feature integrated. As I work on a GNU/Linux OS, I enabled the compose key feature on the `Alt Right` key.
 
-So, yeah, again, I need to use the `Alt Right` but this time it's only a few times per day and I don't need to stick a finger on it to type a character.
+So, yeah, again, I need to use the `Alt Right` key, but this time it's only a few times per day and I don't need to stick a finger on it to type a character.
 
 For the `é` character, I type `Alt Right` -> `'` -> `e`.
 I can even type characters that I can't type on French layout!
