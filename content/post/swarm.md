@@ -1,9 +1,9 @@
 ---
 title: "Never use Docker Compose again for production"
-date: 2023-05-01T00:59:17+01:00
+date: 2023-05-08T00:59:17+01:00
 ---
 
-# Why using Docker Compose for production is bad ?
+# Why using Docker Compose for production is bad?
 
 OK, that's a bit misleading, it's not THAT bad. With compose, you are defining your services with a simple YAML file and you can pull images from your registry.
 So, with a good integration and a correct deploy script, you can have a good experience with Docker Compose on production.
@@ -12,8 +12,8 @@ When I say, it's bad, it's because you are one command away from using Docker Sw
 
 After typing `docker swarm init` in your production server, you will get everything Docker Engine has to offer, plus, the possibility to host your applications on a multi-node architecture without headaches, a new docker network type (overlay) as the default load balancer packed with Swarm, a more secure secret mechanism to store safely confidential informations (DB credentials), rolling updates, replicas ...
 
-Swarm is known to be used on cluster that supports multiples nodes (multiples Docker Engines) to create an high resilient system in case one of your node is going off.
-But I'll show you that a mono-node Swarm is far better than a Compose without going too much in depth.
+Swarm is known to be used on a cluster that supports multiples nodes (multiples Docker Engines) to create a high resilient system in case one of your node is going off.
+But I'll show you that a mono-node Swarm is far better than a Compose without going too much in-depth.
 
 # Small example with an average architecture
 
@@ -87,29 +87,28 @@ volumes:
   db-data:
 ```
 
-Yes, it's a bit longer to write, but you only write it once for a better deployment.
-We defined a persistent volume for the databas. The way is it done is a little bit different for Swarm, because the volume needs to be uniques across the cluster for a unique replica.
-In most case, the database must have 1 replica.
+Yes, it's a bit longer to write, but you only write it once for better deployment.
+We defined a persistent volume for the database. The way is it done is a little bit different for Swarm, because the volume needs to be unique across the cluster for a unique replica.
+In most cases, the database must have 1 replica.
 
-The service `web` is now defined to be deployed on two replicas, and the update process will update the service 1 replica by an other. With this trick, our uptime will be at 100% because at least one replica will be up during a new deployment.
+The service `web` is now defined to be deployed on two replicas, and the update process will update the service 1 replica with another. With this trick, our uptime will be at 100% because at least one replica will be up during a new deployment.
 
-We are not longer exposing credientials in plain text, here we are using a secret nammed `db_init` which is a file that will be copied in the `target` location. So we can imagine that the secret value is a shell script who exports all of the DB credentials.
+We are not longer exposing credentials in plain text, here we are using a secret named `db_init` which is a file that will be copied in the `target` location. So we can imagine that the secret value is a shell script that exports all of the DB credentials.
 Same for the service `web`, we are using a secret to get access to the database credentials without exposing them.
 
 To deploy this stack, we will need to run `docker stack deploy -c <this-file>` on a Swarm node.
 
 # Making a good integration with Swarm
 
-If we imagine with a possible Docker Compose setup in a CI job, we could have something like:
+If we imagine a possible Docker Compose setup in a CI job, we could have something like this:
 - Retrieving SSH private key
 - Creating a folder for the specific deploy
 - Copying docker-compose.yml file and .env files on the server
 - `docker compose pull -> up`
 
-What I don't like with this setup, it is we are doing mutations on the target, and a lot of errors can happens because they are mutations on the filesystem on the filesystem (What if the deploy folder moved ?).
+What I don't like with this setup, is we are doing mutations on the target, and a lot of errors can happen because they are mutations on the filesystem on the filesystem (What if the deploy folder moved ?).
 
-With Docker Swarm, you are only deploying a YAML file who follows the [Compose Spec](https://compose-spec.io/).
-Here is an exemple with a Gitlab CI job where we deploy a stack (a set of services similar to the previous Docker Compose) on the production environment:
+Here is an example with a Gitlab CI job where we deploy a stack (a set of services similar to the previous Docker Compose) on the production environment by only sending to the Docker daemon deployments information, nothing is added or deleted on the server from the CI job:
 
 ```yml
 .swarm_deploy:
@@ -134,22 +133,22 @@ swarm_deploy_production:
     ENV: "production"
 ```
 
-And its done, we don't need to copy anything. We changed the targeted docker daemon by changing the DOCKER_HOST variable and by using the ssh protocol.
-In the before_script section we copied our SSH private key to permits Docker to use it while communicating to the daemon.
+And it is done, we don't need to copy anything. We changed the targeted docker daemon by changing the DOCKER_HOST variable and by using the ssh protocol.
+In the before_script section, we copied our SSH private key to allow Docker to use it while communicating with the daemon.
 
-In a pipeline, we can imagine some image build stages done with [kaniko](https://github.com/GoogleContainerTools/kaniko) who whill pushes to the new registry.
+In a pipeline, we can imagine some image build stages done with [kaniko](https://github.com/GoogleContainerTools/kaniko) who will push to the new registry.
 
-# You are scaling ? no worries, Swarm will do the job
+# You are scaling? no worries, Swarm will do the job
 
 Your application is getting more and more load on it and your single node is not enough to support all of it.
 
-As I explained before, we can set a number of replicas for each service in a stack.
-In a first time we can increases the number of replicas on our single-node cluster.
+As I explained before, we can set several replicas for each service in a stack.
+At first, we can increase the number of replicas on our single-node cluster.
 If it is not enough, we can add a new node to the cluster, see the Docker [documentation]([documentation](https://docs.docker.com/engine/swarm/swarm-tutorial/add-nodes/)).
 
-Docker Swarm will manage alone all of the containers distribution between the nodes and all of the complexity is removed thanks to the overlay type network who make a great abstraction between nodes.
+Docker Swarm will manage alone all of the distribution of the containers between the nodes and all of the complexity is removed thanks to the `overlay` network type which makes a great abstraction between nodes.
 Here is an illustration from the Docker documentation of the default network `ingress`:
 
 ![image](https://docs.docker.com/engine/swarm/images/ingress-routing-mesh.png)
 
-Even if you increase the number of node in your cluster, the `ingress` network will manage load-balance every requests from the outside.
+Even if you increase the number of nodes in your cluster, the `ingress` network will manage the load-balance of every request from the outside.
