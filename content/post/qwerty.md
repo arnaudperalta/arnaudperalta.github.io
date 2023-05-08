@@ -43,4 +43,6 @@ For the `é` character, I type `Alt Right` -> `'` -> `e`.
 I can even type characters that I can't type on French layout!
 For example `É`, I type  `Alt Right` -> `'` -> `E`.
 
+For my personal Windows usage, I installed [WinCompose](https://github.com/samhocevar/wincompose), and thats just work. It is hidden in the system tray and I have never looked at it since I installed it.
+
 Don't be afraid to change your keyboard layout like me, I learned this new layout in 2 or 3 weeks but only the first day has been really difficult. Now I'm thankful for having done that.
