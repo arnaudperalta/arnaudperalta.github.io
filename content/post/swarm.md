@@ -3,7 +3,7 @@ title: "Never use Docker Compose again for production"
 date: 2023-05-08T00:59:17+01:00
 ---
 
-# Why using Docker Compose for production is bad?
+## Why using Docker Compose for production is bad?
 
 OK, that's a bit misleading, it's not THAT bad. With compose, you are defining your services with a simple YAML file and you can pull images from your registry.
 So, with a good integration and a correct deploy script, you can have a good experience with Docker Compose on production.
@@ -15,7 +15,7 @@ After typing `docker swarm init` in your production server, you will get everyth
 Swarm is known to be used on a cluster that supports multiples nodes (multiples Docker Engines) to create a high resilient system in case one of your node is going off.
 But I'll show you that a mono-node Swarm is far better than a Compose without going too much in-depth.
 
-# Small example with an average architecture
+## Small example with an average architecture
 
 In case you are actually deploying with Docker Compose, you can keep your actual docker-compose.yml file.
 In effect, the way Docker Compose and Swarm deployment are defined follows the [Compose Spec](https://compose-spec.io/).
@@ -98,7 +98,7 @@ Same for the service `web`, we are using a secret to get access to the database 
 
 To deploy this stack, we will need to run `docker stack deploy -c <this-file>` on a Swarm node.
 
-# Making a good integration with Swarm
+## Making a good integration with Swarm
 
 If we imagine a possible Docker Compose setup in a CI job, we could have something like this:
 - Retrieving SSH private key
@@ -138,7 +138,7 @@ In the before_script section, we copied our SSH private key to allow Docker to u
 
 In a pipeline, we can imagine some image build stages done with [kaniko](https://github.com/GoogleContainerTools/kaniko) who will push to the new registry.
 
-# You are scaling? no worries, Swarm will do the job
+## You are scaling? no worries, Swarm will do the job
 
 Your application is getting more and more load on it and your single node is not enough to support all of it.
 
