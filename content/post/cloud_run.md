@@ -11,7 +11,7 @@ These clusters had each two nodes. With the costs of the Kubernetes Engine, Comp
 
 ![Before](/images/cr_before.png#center)
 
-This infrastructure is costing a huge cost for an application serving no more than 100 users on working days. But this is not the real problem.
+This infrastructure cost is huge for an application serving no more than 100 users on working days. But this is not the real problem.
 
 In an IT service company, it can be hard for junior developers to understand how their code is running on a GKE cluster. So, they have problems understanding how to read logs and understand networking concepts inside a pod. And the worst is the fear created by this because they have a fear to operate on the [Kustomize](https://kustomize.io/) files (e.g. inserting a new secret inside a service). So the team needed to get a specific “DevOps” engineer (who does not know how the app works of course) to get the work done.
 
