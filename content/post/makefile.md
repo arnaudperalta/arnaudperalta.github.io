@@ -1,5 +1,5 @@
 ---
-title: "GNU Make, you known it, now use it !"
+title: "GNU Make, you know it, now use it !"
 date: 2023-01-21T00:59:17+01:00
 ---
 Here is a scenario that you have probably already experienced: you intervene on a new project and your first reflex is to read the README file to understand what is going on, then starting your development.

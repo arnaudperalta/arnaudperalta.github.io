@@ -22,7 +22,7 @@ params:
       url: "mailto:arnaud.peralta@gmail.com"
   profileMode:
     enabled: true
-    title: "Software engineer - Integration lover"
+    title: "Software engineer"
     subtitle: "Welcome to my blog."
     imageUrl: "https://avatars.githubusercontent.com/u/34254556?v=4"
     imageTitle: "My face"
