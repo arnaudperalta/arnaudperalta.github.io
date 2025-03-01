@@ -1,5 +1,5 @@
 ---
-title: "Never use Docker Compose again for production"
+title: "You should not use Docker Compose for production"
 date: 2023-05-08T00:59:17+01:00
 ---
 

@@ -1,8 +1,15 @@
 baseURL: 'https://arnaudperalta.com'
 languageCode: 'en-us'
-title: 'Arnaud Peralta'
+title: "Arnaud Peralta's Blog"
 theme: 'hugo-PaperMod'
-paginate: 5
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+pagination:
+  pagerSize: 5
 
 params:
   env: production
@@ -22,8 +29,8 @@ params:
       url: "mailto:arnaud.peralta@gmail.com"
   profileMode:
     enabled: true
-    title: "Software engineer"
-    subtitle: "Welcome to my blog."
+    title: "Arnaud Peralta"
+    subtitle: "Welcome 👋"
     imageUrl: "https://avatars.githubusercontent.com/u/34254556?v=4"
     imageTitle: "My face"
     imageWidth: 160

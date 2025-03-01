@@ -1,5 +1,5 @@
 ---
-title: "I use the QWERTY layout, and everyone thinks I'm crazy"
+title: "About using QWERTY in France"
 date: 2023-05-06T00:59:17+01:00
 ---
 
