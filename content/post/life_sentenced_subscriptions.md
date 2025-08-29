@@ -1,5 +1,6 @@
 ---
 title: "Life-sentenced subscriptions"
+date: "2025-08-29"
 ---
 Most people around me are either subscribing to or are part of a cloud storage plan. They usually pay each month around 4€ to keep their media, phone backups, passwords and messages saved in the cloud. From a bigger perspective, this is a great product that prevents people from owning physical hardware that could be stolen or corrupted. The main issue I have with this offering is that people are willing to pay this product for their entire lives.
 
