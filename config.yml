@@ -1,7 +1,7 @@
 baseURL: 'https://arnaudperalta.com'
 languageCode: 'en-us'
 title: "Arnaud Peralta's Blog"
-theme: 'hugo-PaperMod'
+theme: 'PaperMod'
 
 markup:
   goldmark:
